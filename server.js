@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const { listenerCount } = require('events');
-const db = require( 'connection.js' )('employee_db','localhost')
+const db = require('./db/index');
 
 //ask questions
 
@@ -48,11 +48,12 @@ async function askQuestions() {
   }
 };
 
-function viewAllEmployees(){
-  const allEmp = await db.query('SELECT')
+async function viewAllEmployees(){
+ const employees = await db.viewAllEmployees();
 };
 
 function byDepartment(){
+  
 
 };
 
