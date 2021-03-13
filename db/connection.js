@@ -15,6 +15,7 @@ const connection = mysql.createConnection({
     database: 'employee_db',
   });
   
+  //this allows the use of the async await syntax
   connection.query = util.promisify(connection.query);
 
   connection.connect((err) => {

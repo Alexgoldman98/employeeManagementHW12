@@ -1,7 +1,8 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const { listenerCount } = require('events');
-const db = require('./db/index');
+const db = require('./db');
+const connection = require('./db/connection');
 
 //ask questions
 
@@ -11,8 +12,9 @@ async function askQuestions() {
       name: 'firstQ',
       type: 'list',
       message: 'What would you like to do?',
-      choices: [
-        'View All Employees',
+      choices: [{
+        name: 'View All Employees', 
+        value: 'VIEW_EMPLOYEES'},
         'View All Employees By Department',
         'View All Employees By Manager',
         'Add Employee',
@@ -21,12 +23,13 @@ async function askQuestions() {
         'Update Employee Manager',
         'Remove Manager',
         'View all Roles',
+      
       ]
     }
   ])
   
-  if (answers.firstQ === 'View All Employees'){
-    viewAllEmployees()
+  if (answers.firstQ === 'VIEW_EMPLOYEES'){
+    return viewAllEmployees()
   } else if(answers.firstQ === 'View All Employees By Department'){
     byDepartment()
   } else if(answers.firstQ === 'View All Employees By Manager'){
@@ -48,14 +51,19 @@ async function askQuestions() {
   }
 };
 
-async function viewAllEmployees(){
- const employees = await db.viewAllEmployees();
- console.log(`\n `)
- console.table(employees)
- askQuestions()
+function viewAllEmployees(){
+//  const employees = await db.findAllEmployees();
+//  console.log(`\n `)
+//  console.table(employees)
+connection.query("SELECT * FROM employee",
+function(err,res){
+  if (err) throw err
+  console.table(res)
+  askQuestions()
+});
 };
 
-function byDepartment(){
+async function byDepartment(){
   const department = await db.byDepartment();
   console.log(`\n `)
   console.table(department)
@@ -63,25 +71,25 @@ function byDepartment(){
 
 };
 
-function byManager(){
+async function byManager(){
   const manager = await db.byManager();
   console.log(`\n `)
   console.table(manager)
   askQuestions()
 };
 
-function addEmployee(){
+async function addEmployee(){
   const employees = await db.viewAllEmployees();
   console.log(`\n `)
   console.table(employees)
   askQuestions()
 };
 
-function removeEmployee(){
+async function removeEmployee(){
 
 };
 
-function updateEmployee(){
+async function updateEmployee(){
 
 };
 

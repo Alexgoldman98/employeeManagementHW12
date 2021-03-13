@@ -5,12 +5,12 @@ class DB {
         this.connection = connection;
     };
     //making function to find all employees
-    viewAllEmployees(){
-        return this.connection.query("SELECT employee.id, employee.first_name, employee.last_name")
+    findAllEmployees(){
+        return this.connection.query("SELECT * FROM employee")
     };
 
     byDepartment(){
-        return this.connection.query("SELECT * FROM department")
+        return this.connection.query("SELECT department.id, department.name")
     };
 
     byManager(){
