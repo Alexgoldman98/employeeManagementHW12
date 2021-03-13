@@ -50,19 +50,31 @@ async function askQuestions() {
 
 async function viewAllEmployees(){
  const employees = await db.viewAllEmployees();
+ console.log(`\n `)
+ console.table(employees)
+ askQuestions()
 };
 
 function byDepartment(){
-  
+  const department = await db.byDepartment();
+  console.log(`\n `)
+  console.table(department)
+  askQuestions()
 
 };
 
 function byManager(){
-
+  const manager = await db.byManager();
+  console.log(`\n `)
+  console.table(manager)
+  askQuestions()
 };
 
 function addEmployee(){
-
+  const employees = await db.viewAllEmployees();
+  console.log(`\n `)
+  console.table(employees)
+  askQuestions()
 };
 
 function removeEmployee(){
