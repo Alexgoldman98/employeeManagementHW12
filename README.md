@@ -26,4 +26,3 @@ Any Questions should be directed to me using the above contact information.
 
 
 ### Video
-https://notetakerhw11alexgoldman.herokuapp.com/
