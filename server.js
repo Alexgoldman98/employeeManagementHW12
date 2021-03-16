@@ -17,6 +17,7 @@ async function askQuestions() {
         'View all Roles',
         'Add Employee',
         'Add department',
+        'Add roles',
         'Update Employee Role'      
       ]
     }
@@ -32,6 +33,8 @@ async function askQuestions() {
     addEmployee()
   } else if(answers.firstQ === 'Add department'){
     addDepartment()
+  } else if(answers.firstQ === 'Add roles'){
+    addRoles()
   } else if (answers.firstQ === 'Update Employee Role'){
     updateEmployee()
   } else{
@@ -63,12 +66,15 @@ async function viewRoles(){
 
 async function addEmployee(){
   const employees = await db.addEmpDB();
-  // console.log(`\n `)
-  // console.table(employees)
   viewAllEmployees()
   askQuestions()
 };
 
+async function addRoles(){
+  const roles = await db.addRolesDB();
+  viewRoles()
+  askQuestions()
+};
 
 async function updateEmployee(){
   const update = await db.updateEmpDB();

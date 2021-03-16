@@ -60,14 +60,35 @@ class DB {
 
     };
 
+    async addRolesDB(){
+        const values = await inquirer.prompt([
+            {
+                message: "Enter new role title",
+                type: 'input',
+                name: 'title'
+            },{
+                message: "Enter new role salary",
+                type: 'input',
+                name: 'salary'
+            },{
+                message: "Enter new role department id",
+                type: 'input',
+                name: 'department_id'
+            }]);
+        return this.connection.query(`INSERT INTO role SET ?`, [values]);
+
+    };
+
     //update employee roles
     async updateEmpDB() {
         const employees = await this.findAllEmployees();
         console.log(`\n `)
         console.table(employees)
+
         const role = await this.findRoles();
         console.log(`\n `)
         console.table(role)
+        
         const values = await inquirer.prompt([
             {
                 message: "Enter employee ID whose role you want to change",
