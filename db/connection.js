@@ -14,13 +14,9 @@ const connection = mysql.createConnection({
     password: 'Password!Haha',
     database: 'employee_db',
   });
-  
+  connection.connect();
   //this allows the use of the async await syntax
   connection.query = util.promisify(connection.query);
 
-  connection.connect((err) => {
-    if (err) throw err;
-    console.log(`connected as id ${connection.threadId}`);
-    connection.end();
-  });
+module.exports=connection;
   

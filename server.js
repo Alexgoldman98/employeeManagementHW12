@@ -1,8 +1,7 @@
-const mysql = require('mysql');
 const inquirer = require('inquirer');
-const { listenerCount } = require('events');
+const { addDepartmentDB } = require('./db');
+// const { listenerCount } = require('events');
 const db = require('./db');
-const connection = require('./db/connection');
 
 //ask questions
 
@@ -12,98 +11,78 @@ async function askQuestions() {
       name: 'firstQ',
       type: 'list',
       message: 'What would you like to do?',
-      choices: [{
-        name: 'View All Employees', 
-        value: 'VIEW_EMPLOYEES'},
-        'View All Employees By Department',
-        'View All Employees By Manager',
-        'Add Employee',
-        'Remove Employee',
-        'Update Employee Role',
-        'Update Employee Manager',
-        'Remove Manager',
+      choices: [
+        'View All Employees', 
+        'View All Departments',
         'View all Roles',
-      
+        'Add Employee',
+        'Add department',
+        'Update Employee Role'      
       ]
     }
   ])
   
-  if (answers.firstQ === 'VIEW_EMPLOYEES'){
-    return viewAllEmployees()
-  } else if(answers.firstQ === 'View All Employees By Department'){
+  if (answers.firstQ === 'View All Employees'){
+    viewAllEmployees()
+  } else if(answers.firstQ === 'View All Departments'){
     byDepartment()
-  } else if(answers.firstQ === 'View All Employees By Manager'){
-    byManager()
-  } else if(answers.firstQ === 'Add Employee'){
-    addEmployee()
-  } else if (answers.firstQ === 'Remove Employee'){
-    removeEmployee()
-  } else if (answers.firstQ === 'Update Employee Role'){
-    updateEmployee()
-  } else if(answers.firstQ === 'Update Employee Manager'){
-    updateManager()
-  } else if(answers.firstQ === 'Remove Manager'){
-    removeManager()
   } else if(answers.firstQ === 'View all Roles'){
     viewRoles()
+  } else if(answers.firstQ === 'Add Employee'){
+    addEmployee()
+  } else if(answers.firstQ === 'Add department'){
+    addDepartment()
+  } else if (answers.firstQ === 'Update Employee Role'){
+    updateEmployee()
   } else{
     console.log('Failed')
   }
 };
 
-function viewAllEmployees(){
-//  const employees = await db.findAllEmployees();
-//  console.log(`\n `)
-//  console.table(employees)
-connection.query("SELECT * FROM employee",
-function(err,res){
-  if (err) throw err
-  console.table(res)
-  askQuestions()
-});
+async function viewAllEmployees(){
+ const employees = await db.findAllEmployees();
+ console.log(`\n `)
+ console.table(employees)
+ askQuestions()
 };
 
 async function byDepartment(){
-  const department = await db.byDepartment();
+  const department = await db.findByDepartment();
   console.log(`\n `)
   console.table(department)
   askQuestions()
 
 };
 
-async function byManager(){
-  const manager = await db.byManager();
+async function viewRoles(){
+  const roles = await db.findRoles();
   console.log(`\n `)
-  console.table(manager)
+  console.table(roles)
   askQuestions()
 };
 
 async function addEmployee(){
-  const employees = await db.viewAllEmployees();
-  console.log(`\n `)
-  console.table(employees)
+  const employees = await db.addEmpDB();
+  // console.log(`\n `)
+  // console.table(employees)
+  viewAllEmployees()
   askQuestions()
 };
 
-async function removeEmployee(){
-
-};
 
 async function updateEmployee(){
-
+  const update = await db.updateEmpDB();
+  askQuestions();
 };
 
-function updateManager(){
-
+async function addDepartment(){
+  const addDep = await db.addDepartmentDB();
+  console.log(`\n `);
+  byDepartment();
+  askQuestions();
 };
 
-function removeManager(){
 
-};
-
-function viewRoles(){
-
-};
 
 askQuestions()
 
